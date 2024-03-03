@@ -3,14 +3,13 @@ package FIFO;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.Queue;
 
 
 /**
  * @author Rasmus Engström
- *//*
+ */
 
-public class FIFO{ // TODO: Lägg till queuen från hålkanbråkan
+public class FIFO implements Queue{
     private ArrayList<Object> queue = new ArrayList<Object>();
     private int maxSize = 0;
     @Override
@@ -86,4 +85,4 @@ public class FIFO{ // TODO: Lägg till queuen från hålkanbråkan
         return true;
     }
 }
-*/
+

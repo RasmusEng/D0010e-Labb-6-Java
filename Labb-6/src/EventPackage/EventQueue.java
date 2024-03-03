@@ -9,12 +9,11 @@ public class EventQueue {
 
     }
     public Event getNextEvent(){
-        return eventQueue.remove(0);
+        return eventQueue.remove(0); // Returnerar de event som är näst på tur och tar bort det ur listan
     }
 
     public void addEventToQueue(Event e){
-        eventQueue.add(eventQueue.size(), e);
-
+        eventQueue.add(e); // Lägger till ett event längst bak i listan.
     }
 
 }

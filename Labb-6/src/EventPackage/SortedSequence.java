@@ -4,22 +4,24 @@ import java.util.ArrayList;
 
 public class SortedSequence {
     private ArrayList<Event> sortedArrayList;
-    public ArrayList<Event> sortArrayList(ArrayList<Event> notSorted){
-        if(notSorted.size() == 0){
-            return notSorted; // Om listan är tom
+    public ArrayList<Event> sortArrayList(ArrayList<Event> list){
+        if(list.size() == 0){
+            return list; // Om listan är tom
         }
 
-
-        //sortedArrayList.add(notSorted.remove(0));
-
-        for(int i = 1; i < notSorted.size(); i++){
-            double currentEventTime = notSorted.get(i).getExecuteTime();
-
-            for(int j = i-1; j >= 0 && notSorted.get(j).getExecuteTime() > currentEventTime; j--){
+        // BubbleSort algoritm som sorterar EventQueue
+        int arrSize = list.size();
+        for(int i = 0; i < arrSize; i++){
+            for(int j = 0; j < arrSize-i-1; j++){
+                if(list.get(j).getExecuteTime() > list.get(i).getExecuteTime()){
+                    Event tempEvent =  list.get(j);
+                    list.set(j, list.get(j+1));
+                    list.set(j+1, tempEvent);
+                }
 
             }
         }
 
-        return notSorted;
+        return list;
     }
 }
