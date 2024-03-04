@@ -8,6 +8,10 @@ public class EventQueue {
     public EventQueue(){
 
     }
+
+    public boolean hasNextEvent(){
+        return !eventQueue.isEmpty();
+    }
     public Event getNextEvent(){
         return eventQueue.remove(0); // Returnerar de event som är näst på tur och tar bort det ur listan
     }
