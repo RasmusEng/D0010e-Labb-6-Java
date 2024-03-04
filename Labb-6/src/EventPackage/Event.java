@@ -2,12 +2,10 @@ package EventPackage;
 
 import StatePackage.State;
 
-import java.util.ArrayList;
-
 abstract public class Event {
     private double executeTime;
 
-    abstract void executeMe(ArrayList<Event> eventQueue, State state);
+    public abstract void executeMe(State state);
 
     public double getExecuteTime(){
         return executeTime;
@@ -16,7 +14,7 @@ abstract public class Event {
 
 class StartSimEvent extends Event{
     @Override
-    void executeMe(ArrayList<Event> eventQueue, State state) {
+    public void executeMe(State state) {
 
     }
 
@@ -25,14 +23,14 @@ class StartSimEvent extends Event{
 class StopSimEvent extends Event{
 
     @Override
-    void executeMe(ArrayList<Event> eventQueue, State state) {
+    public void executeMe(State state) {
 
     }
 }
 
 class CustomerArrivalEvent extends Event{
     @Override
-    void executeMe(ArrayList<Event> eventQueue, State state) {
+    public void executeMe(State state) {
 
     }
 }
@@ -40,7 +38,7 @@ class CustomerArrivalEvent extends Event{
 class CustomerPickedEvent extends Event{
 
     @Override
-    void executeMe(ArrayList<Event> eventQueue, State state) {
+    public void executeMe(State state) {
 
     }
 }
@@ -48,14 +46,14 @@ class CustomerPickedEvent extends Event{
 class CustomerCheckoutEvent extends Event{
 
     @Override
-    void executeMe(ArrayList<Event> eventQueue, State state) {
+    public void executeMe(State state) {
 
     }
 }
 class StoreCloseEvent extends Event{
 
     @Override
-    void executeMe(ArrayList<Event> eventQueue, State state) {
+    public void executeMe(State state) {
 
     }
 }
