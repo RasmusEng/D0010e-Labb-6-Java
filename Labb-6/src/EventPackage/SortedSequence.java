@@ -10,6 +10,7 @@ public class SortedSequence {
         }
 
         // BubbleSort algoritm som sorterar EventQueue
+        // Den är inte speciellt effektiv men duger
         int arrSize = list.size();
         for(int i = 0; i < arrSize; i++){
             for(int j = 0; j < arrSize-i-1; j++){
