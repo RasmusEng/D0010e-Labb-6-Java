@@ -9,6 +9,8 @@ public class StartSimEvent extends Event {
     @Override
     public void executeMe(State state, EventQueue queue) {
         StoreState storeState = (StoreState) state; // typecast
+        storeState.setStoreOpen();
+
         Event stopEvent = new StopSimEvent(); //Skapar stopp för simuleringeen
         stopEvent.setExecuteTime(999);
         queue.addEventToQueue(stopEvent);
@@ -24,6 +26,11 @@ public class StartSimEvent extends Event {
         storeState.setLastEvent(this);
         storeState.notifyOB();
 
+    }
+
+    @Override
+    public String toString() {
+        return "Start";
     }
 
 }

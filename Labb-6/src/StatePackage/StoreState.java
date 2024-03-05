@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class StoreState extends State {
 
     private int openReg, amountOfRegisters, maxCustomers, customersInStore, checkedOutCustomers, lostCustomers;
-    private double lambda, closeTime;
+    private double lambda, closeTime, totalTimeInQueue, totalTimeRegEmpty;
     private boolean isOpen;
 
     private Event lastEvent;
@@ -72,6 +72,10 @@ public class StoreState extends State {
     public void removeCustomerInStore(){
         customersInStore -=1;
     }
+
+    public int getCustomersInStore(){
+        return customersInStore;
+    }
     public void addLostCustomer(){
         lostCustomers +=1;
     }
@@ -82,6 +86,10 @@ public class StoreState extends State {
 
     public void setStoreClosed(){
         isOpen = false;
+    }
+
+    public void setStoreOpen(){
+        isOpen = true;
     }
 
     public boolean isOpen() {
@@ -125,4 +133,19 @@ public class StoreState extends State {
         return new CheckoutQueue();
     }
 
+    public void addTotalTimeInQueue(double moreTime){
+        totalTimeInQueue += moreTime;
+    }
+
+    public void addTotalTimeRegEmpty(double moreTime){
+        totalTimeRegEmpty += moreTime;
+    }
+
+    public double getTotalTimeInQueue() {
+        return totalTimeInQueue;
+    }
+
+    public double getTotalTimeRegEmpty() {
+        return totalTimeRegEmpty;
+    }
 }
