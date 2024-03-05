@@ -21,7 +21,7 @@ public class StoreView extends View{
         System.out.println("Frö.....................: " + "variabel\n");
         System.out.println("FÖRLOPP");
         System.out.println("=======");
-        System.out.println("Tid\tHändelse\tKund\t?\tled\tledT\tI\t$\t:-(\tköat\tköT\tköar\t[Kassakö..]");
+        System.out.println("Tid\tHändelse\t?\tKund\t?\tled\tledT\tI\t$\t:-(\tköat\tköT\tköar\t[Kassakö..]");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class StoreView extends View{
             printHead(storeState);
             huvud++;
         }else{
-            System.out.println(state.getTime() + "\t" + storeState.getLastEvent().getClass().getName() + "\t" + storeState.isOpen());
+            System.out.println(state.getTime() + "\t" + storeState.getLastEvent().toString() + "\t" + storeState.isOpen() +"\t" + storeState.getTotalTimeRegEmpty() +"\t" + storeState.getCustomersInStore());
         }
     }
 
