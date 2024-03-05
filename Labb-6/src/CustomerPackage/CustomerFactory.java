@@ -1,18 +1,22 @@
 package CustomerPackage;
 
+import StatePackage.StoreState;
+
 public class CustomerFactory {
-    private int createdCustomers = -1;
+    private static int createdCustomers = 0;
 
-    public CustomerFactory(){
-
-    }
-
-    public Customer createCustomer(){
+    /** Creates a new Customer
+     * @param state used to add the customer in the state
+     * @return the new created customer
+     */
+    public static Customer createCustomer(StoreState state){
+        Customer newCustomer = new Customer(createdCustomers);
+        state.addCustomer(newCustomer);
         createdCustomers++;
-        return new Customer(createdCustomers);
+        return newCustomer;
     }
 
-    public int nextCustomerID(){
-        return createdCustomers++;
+    public static int nextCustomerID(){
+        return createdCustomers + 1;
     }
 }

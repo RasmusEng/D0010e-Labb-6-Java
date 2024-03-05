@@ -3,8 +3,7 @@ package EventPackage;
 import java.util.ArrayList;
 
 public class SortedSequence {
-    private ArrayList<Event> sortedArrayList;
-    public ArrayList<Event> sortArrayList(ArrayList<Event> list){
+    public static ArrayList<Event> sortArrayList(ArrayList<Event> list){
         if(list.size() == 0){
             return list; // Om listan är tom
         }

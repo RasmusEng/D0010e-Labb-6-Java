@@ -3,11 +3,7 @@ package EventPackage;
 import java.util.ArrayList;
 
 public class EventQueue {
-    private ArrayList<Event> eventQueue;
-
-    public EventQueue(){
-
-    }
+    private ArrayList<Event> eventQueue = new ArrayList<>();
 
     public boolean hasNextEvent(){
         return !eventQueue.isEmpty();
@@ -18,6 +14,7 @@ public class EventQueue {
 
     public void addEventToQueue(Event e){
         eventQueue.add(e); // Lägger till ett event längst bak i listan.
+        eventQueue = SortedSequence.sortArrayList(eventQueue); // ser till att eventQueue blir sorterad.
     }
 
 }

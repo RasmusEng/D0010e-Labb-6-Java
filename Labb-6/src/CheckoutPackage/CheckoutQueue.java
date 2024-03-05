@@ -4,21 +4,21 @@ import CustomerPackage.Customer;
 import FIFO.*;
 
 public class CheckoutQueue {
-    private FIFO queue;
-
-    public CheckoutQueue(){
-
-    }
+    private FIFO queue = new FIFO();
 
     public Customer getNextCustomer(){
         return queue.removeFirst();
+    }
+
+    public boolean hasNextCustomer(){
+        return (!queue.isEmpty());
     }
 
     public String customersInQueue(){
         return queue.toString();
     }
 
-    public addCustomerToQueue(Customer newCustomer){
+    public void addCustomerToQueue(Customer newCustomer){
         queue.add(newCustomer);
     }
 }

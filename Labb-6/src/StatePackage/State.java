@@ -22,13 +22,17 @@ public class State extends Observable {
         stop = true;
     }
 
+    public double getTime(){
+        return calculatedTime;
+    }
+
     public void addTime(double time){
         if (time < calculatedTime){
             throw new RuntimeException();
         }
         calculatedTime = time;
     }
-    private void notifyOB(){
+    public void notifyOB(){
         setChanged();
         notifyObservers();
     }

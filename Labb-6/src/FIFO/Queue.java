@@ -5,12 +5,14 @@ package FIFO;
 // (powered by FernFlower decompiler)
 //
 
+import CustomerPackage.Customer;
+
 import java.util.NoSuchElementException;
 
 public interface Queue {
     void add(Object var1);
 
-    void removeFirst() throws NoSuchElementException;
+    Customer removeFirst() throws NoSuchElementException;
 
     Object first() throws NoSuchElementException;
 

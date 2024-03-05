@@ -1,6 +1,8 @@
 
 package FIFO;
 
+import CustomerPackage.Customer;
+
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
@@ -21,11 +23,12 @@ public class FIFO implements Queue{
     }
 
     @Override
-    public void removeFirst(){
+    public Customer removeFirst(){
         if(queue.size() == 0){
             throw new NoSuchElementException();
         }
             queue.remove(0);
+        return null;
     }
 
     @Override

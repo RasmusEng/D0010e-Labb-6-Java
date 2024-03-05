@@ -3,7 +3,7 @@ package CustomerPackage;
 import EventPackage.Event;
 
 public class Customer {
-    private int customerID;
+    private final int customerID;
     private Event currentEvent;
 
     protected Customer(int id, Event startevent){

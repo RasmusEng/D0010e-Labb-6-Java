@@ -13,6 +13,7 @@ public class RunSim {
         View view = new StoreView();
         State newState = new StoreState(view);
         Simulator store = new Simulator(newState, eventQueue, view);
+        store.Run();
     }
 
 }
