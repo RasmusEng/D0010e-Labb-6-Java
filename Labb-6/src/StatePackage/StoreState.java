@@ -1,18 +1,19 @@
 package StatePackage;
 import CheckoutPackage.CheckoutQueue;
 import EventPackage.Event;
+import Optimize.K;
 import ViewPackage.*;
 import CustomerPackage.Customer;
-import StatePackage.ShoppingTimeGenerator;
 
 import java.util.ArrayList;
 
 
-public class StoreState extends State {
+public class StoreState extends State implements K {
 
-    private int openReg, amountOfRegisters, maxCustomers, customersInStore, checkedOutCustomers, lostCustomers;
-    private double lambda, closeTime, totalTimeInQueue, totalTimeRegEmpty;
+    private int openReg, amountOfRegisters = 2, customersInStore, checkedOutCustomers, lostCustomers;
+    private double totalTimeInQueue, totalTimeRegEmpty;
     private boolean isOpen;
+    private CheckoutQueue checkoutQueue = new CheckoutQueue();
 
     private Event lastEvent;
     private ArrayList<Customer> customerArrayList = new ArrayList<Customer>();
@@ -22,22 +23,13 @@ public class StoreState extends State {
         super(view);
     }
 
-    public void addCustomerToQueue(Customer Customer){
 
-
-    }
-
-    public ShoppingTimeGenerator getShoppingTimeGenerator()
-    {
-        return new ShoppingTimeGenerator();
-    }
-
-    public double getLambda(){
-        return lambda;
+    public CheckoutQueue getCheckoutQueue() {
+        return checkoutQueue;
     }
 
     public boolean storeFull(){
-        if(customersInStore >= maxCustomers){
+        if(customersInStore >= M){
             return true;
         }
         return false;
@@ -53,13 +45,6 @@ public class StoreState extends State {
         return amountOfRegisters;
     }
 
-    public int getMaxCustomers(){
-        return maxCustomers;
-    }
-
-    public double getCloseTime(){
-        return closeTime;
-    }
     public void addOpenReg(){
         openReg +=1;
     }
@@ -72,7 +57,6 @@ public class StoreState extends State {
     public void removeCustomerInStore(){
         customersInStore -=1;
     }
-
     public int getCustomersInStore(){
         return customersInStore;
     }
@@ -129,10 +113,6 @@ public class StoreState extends State {
         return lastEvent;
     }
 
-    public CheckoutQueue getCheckOutQueue(){
-        return new CheckoutQueue();
-    }
-
     public void addTotalTimeInQueue(double moreTime){
         totalTimeInQueue += moreTime;
     }
@@ -147,5 +127,12 @@ public class StoreState extends State {
 
     public double getTotalTimeRegEmpty() {
         return totalTimeRegEmpty;
+    }
+    public double getPickupTime() {
+        return (LOW_COLLECTION_TIME + HIGH_COLLECTION_TIME) / 2;
+    }
+
+    public double getCheckoutTime(){
+        return (LOW_PAYMENT_TIME + HIGH_PAYMENT_TIME) / 2;
     }
 }

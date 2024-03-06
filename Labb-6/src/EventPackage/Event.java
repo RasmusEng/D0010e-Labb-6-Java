@@ -54,11 +54,14 @@ class CustomerArrivalEvent extends Event{
             storeState.addLostCustomer();
         } else {
             storeState.addCustomerInStore();
-            storeState.getCustomerWithEvent(this).setCurrentEvent(new CustomerPickedEvent(storeState.getTime() + storeState.getShoppingTimeGenerator().getPickupTime()));
+            double nexttime = storeState.getTime() + storeState.getPickupTime();
+            Event picking = new CustomerPickedEvent(nexttime);
+            storeState.getCustomerWithEvent(this).setCurrentEvent(picking);
+            queue.addEventToQueue(picking);
         }
 
         Customer cust = CustomerFactory.createCustomer(storeState);
-        Event newArrival = new CustomerArrivalEvent(storeState.getTime() + storeState.getLambda());
+        Event newArrival = new CustomerArrivalEvent(storeState.getTime() + storeState.L);
         cust.setCurrentEvent(newArrival);
         queue.addEventToQueue(newArrival);
 
@@ -93,12 +96,12 @@ class CustomerPickedEvent extends Event{
 
         if (storeState.isRegEmpty()){
             storeState.addOpenReg();
-            Event checkout = new CustomerCheckoutEvent(this.getExecuteTime() + storeState.getShoppingTimeGenerator().getCheckoutTime());
+            Event checkout = new CustomerCheckoutEvent(this.getExecuteTime() + storeState.getCheckoutTime());
             storeState.getCustomerWithEvent(this).setCurrentEvent(checkout);
             queue.addEventToQueue(checkout);
         } else {
 
-            storeState.addCustomerToQueue(storeState.getCustomerWithEvent(this));
+            storeState.getCheckoutQueue().addCustomerToQueue(storeState.getCustomerWithEvent(this));
             storeState.getCustomerWithEvent(this).setTimeGetInLine(storeState.getTime());
             storeState.getCustomerWithEvent(this).setCurrentEvent(null);
 
@@ -134,10 +137,10 @@ class CustomerCheckoutEvent extends Event{
         storeState.addTime(this.getExecuteTime());
         updateTimeRegisterEmpty(storeState);
 
-        if (storeState.getCheckOutQueue().hasNextCustomer()){
-            double nexttime = storeState.getTime() + storeState.getShoppingTimeGenerator().getCheckoutTime();
+        if (storeState.getCheckoutQueue().hasNextCustomer()){
+            double nexttime = storeState.getTime() + storeState.getCheckoutTime();
             Event newCheckout = new CustomerCheckoutEvent(nexttime);
-            Customer nextCustomerToCheckout = storeState.getCheckOutQueue().getNextCustomer();
+            Customer nextCustomerToCheckout = storeState.getCheckoutQueue().getNextCustomer();
             nextCustomerToCheckout.setTimeGetOutOfLine(storeState.getTime());
             storeState.addTotalTimeInQueue(nextCustomerToCheckout.getTimeSpentInQueue());
             nextCustomerToCheckout.setCurrentEvent(newCheckout);

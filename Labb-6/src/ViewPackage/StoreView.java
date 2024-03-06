@@ -1,9 +1,8 @@
 package ViewPackage;
 
-import EventPackage.Event;
 import StatePackage.State;
 import StatePackage.StoreState;
-import StatePackage.ShoppingTimeGenerator;
+
 import java.util.Observable;
 
 public class StoreView extends View{
@@ -14,14 +13,14 @@ public class StoreView extends View{
         System.out.println("PARAMETRAR");
         System.out.println("==========");
         System.out.println("Antal kassor............: " + state.getAmountOfRegisters());
-        System.out.println("Vad som ryms............: " + state.getMaxCustomers());
-        System.out.println("Ankomsthastighet........: " + state.getLambda());
-        System.out.println("Plocktider, [Pmin..Pmax]: " + "[" + state.getShoppingTimeGenerator().getpMin() + ".." +state.getShoppingTimeGenerator().getpMax()+"]");
-        System.out.println("Betaltider, [Kmin..Kmax]: " + "[" + state.getShoppingTimeGenerator().getkMin() + ".." +state.getShoppingTimeGenerator().getkMax()+"]");
-        System.out.println("Frö.....................: " + "variabel\n");
+        System.out.println("Vad som ryms............: " + state.M);
+        System.out.println("Ankomsthastighet........: " + state.L);
+        System.out.println("Plocktider, [Pmin..Pmax]: " + "[" + state.LOW_COLLECTION_TIME + ".." +state.HIGH_COLLECTION_TIME+"]");
+        System.out.println("Betaltider, [Kmin..Kmax]: " + "[" + state.LOW_PAYMENT_TIME + ".." +state.HIGH_PAYMENT_TIME+"]");
+        System.out.println("Frö.....................: " + state.SEED);
         System.out.println("FÖRLOPP");
         System.out.println("=======");
-        System.out.println("Tid\tHändelse\t?\tKund\t?\tled\tledT\tI\t$\t:-(\tköat\tköT\tköar\t[Kassakö..]");
+        System.out.println("Tid\t<Händelse\t?\tKund\t?\tled\tledT\tI\t$\t:-(\tköat\tköT\tköar\t[Kassakö..]");
     }
 
     @Override
