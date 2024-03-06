@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 public interface Queue {
     void add(Object var1);
 
-    Customer removeFirst() throws NoSuchElementException;
+    Object removeFirst() throws NoSuchElementException;
 
     Object first() throws NoSuchElementException;
 

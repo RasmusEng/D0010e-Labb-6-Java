@@ -5,6 +5,13 @@ import CustomerPackage.CustomerFactory;
 import StatePackage.State;
 import StatePackage.StoreState;
 
+/**
+ *
+ * @author Rasmus, Albin, Walter, Alex
+ * StartSimEvent of the Sim
+ *
+ * */
+
 public class StartSimEvent extends Event {
     @Override
     public void executeMe(State state, EventQueue queue) {
@@ -16,7 +23,7 @@ public class StartSimEvent extends Event {
         queue.addEventToQueue(closeEvent);
 
         Customer first = CustomerFactory.createCustomer(storeState); //skapar en ny kund
-        first.setCurrentEvent(new CustomerArrivalEvent(0)); //ger den nya kunden ett arrivalevent
+        first.setCurrentEvent(new CustomerArrivalEvent(storeState.getLambda())); //ger den nya kunden ett arrivalevent
         queue.addEventToQueue(first.getCurrentEvent()); //lägger till eventet i kön... så att det sker.
 
         Event stopEvent = new StopSimEvent(); //Skapar stopp för simuleringeen

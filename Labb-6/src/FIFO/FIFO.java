@@ -23,12 +23,11 @@ public class FIFO implements Queue{
     }
 
     @Override
-    public Customer removeFirst(){
+    public Object removeFirst(){
         if(queue.size() == 0){
             throw new NoSuchElementException();
         }
-            queue.remove(0);
-        return null;
+        return queue.remove(0);
     }
 
     @Override
@@ -55,6 +54,10 @@ public class FIFO implements Queue{
     @Override
     public int size() {
         return queue.size();
+    }
+
+    public Object get(int index){
+        return queue.get(index);
     }
 
     public String toString(){

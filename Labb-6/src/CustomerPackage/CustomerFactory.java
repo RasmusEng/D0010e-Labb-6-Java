@@ -2,6 +2,13 @@ package CustomerPackage;
 
 import StatePackage.StoreState;
 
+/**
+ *
+ * @author Rasmus, Albin, Walter, Alex
+ * CustomerFactory of the StoreSim
+ *
+ * */
+
 public class CustomerFactory {
     private static int createdCustomers = 0;
 
@@ -15,6 +22,13 @@ public class CustomerFactory {
         createdCustomers++;
         return newCustomer;
     }
+
+    /**
+     * A method that returns the id for the next created Customer
+     *
+     * @return The id for the next Customer
+     *
+     * */
 
     public static int nextCustomerID(){
         return createdCustomers + 1;
