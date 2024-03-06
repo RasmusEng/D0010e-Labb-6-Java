@@ -2,9 +2,23 @@ package EventPackage;
 
 import java.util.ArrayList;
 
+/**
+ *
+ * @author Rasmus, Albin, Walter, Alex
+ * EventQueue of the Sim
+ *
+ * */
 public class EventQueue {
     private ArrayList<Event> eventQueue = new ArrayList<>();
 
+    /**
+     * A method that checks if the EventQueue has
+     * a next Event
+     *
+     * @return True if the EventQueue has a next Event, false otherwise
+     *
+     *
+     * */
     public boolean hasNextEvent(){
         return !eventQueue.isEmpty();
     }

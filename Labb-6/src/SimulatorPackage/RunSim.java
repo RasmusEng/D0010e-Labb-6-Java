@@ -1,4 +1,4 @@
-package SimlutalorPackage;
+package SimulatorPackage;
 
 
 import EventPackage.*;

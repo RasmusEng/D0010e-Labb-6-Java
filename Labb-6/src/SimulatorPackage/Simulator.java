@@ -1,22 +1,28 @@
-package SimlutalorPackage;
+package SimulatorPackage;
 
 import StatePackage.State;
 import EventPackage.*;
 import ViewPackage.*;
 
+/**
+ *
+ * @author Rasmus, Albin, Walter, Alex
+ * Simulator of the project
+ *
+ * */
+
 public class Simulator {
-
-    /**
-     * creates a new simulatorobject
-     * @param currentState allows the simulator to store values
-     * @param eventQueue feeds the simulator with stuff to happen
-     * @param view looks at what is happening
-     */
-
     private State currentState;
     private EventQueue eventQueue;
     private View view;
 
+    /**
+     * The constructor of the Simulator object
+     *
+     * @param currentState Allows the simulator to store values
+     * @param eventQueue Feeds the simulator with stuff to happen
+     * @param view Looks at what is happening
+     * */
     public Simulator (State currentState, EventQueue eventQueue, View view){
         this.currentState = currentState;
         this.eventQueue = eventQueue;
