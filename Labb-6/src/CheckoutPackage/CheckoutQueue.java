@@ -2,6 +2,7 @@ package CheckoutPackage;
 
 import CustomerPackage.Customer;
 import FIFO.*;
+import sun.misc.Queue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,9 @@ import java.util.List;
  * */
 
 public class CheckoutQueue {
-    private FIFO queue = new FIFO();
+    private String lastQueue = "[]";
+    private int lastAmountPeopleInQueue;
+   private FIFO queue = new FIFO();
 
     /**
      * A getter method for the next customer
@@ -50,11 +53,30 @@ public class CheckoutQueue {
         return queue.toString();
     }
 
-
+    /**
+     *  A method that returns the current size of the queue
+     *
+     * @return The current size of the queue
+     */
     public int customerQueueSize(){
         return queue.size();
     }
 
+    /**
+     *  A method that gets the previous amount of customers in the queue
+     *
+     * @return last amount of people in the queue
+     */
+    public int getLastAmountPeopleInQueue(){
+        int temp = lastAmountPeopleInQueue;
+        lastAmountPeopleInQueue = customerQueueSize();
+        return temp;
+    }
+
+    /**
+     * A method that returns the current customer ID:s in the queue
+     * @return String with the current queue:s customerID:s
+     */
     public String idInQueue(){
         String idinQueue = "[";
         for(int i = 0; i < queue.size(); i++){
@@ -67,6 +89,17 @@ public class CheckoutQueue {
         }
         idinQueue = idinQueue.concat("]");
         return idinQueue;
+    }
+
+    /**
+     *  A method that returns the last queue:s customer ID:s
+     * @return String with the previous queue:s customerID:s
+     */
+
+    public String getLastQueue(){
+        String tempQueue = lastQueue;
+        lastQueue = idInQueue();
+        return tempQueue;
     }
 
     /**

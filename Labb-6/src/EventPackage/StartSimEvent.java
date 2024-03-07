@@ -30,9 +30,6 @@ public class StartSimEvent extends Event {
         stopEvent.setExecuteTime(storeState.STOP_TIME);
         queue.addEventToQueue(stopEvent);
 
-
-
-
         storeState.setLastEvent(this);
         storeState.notifyOB();
 

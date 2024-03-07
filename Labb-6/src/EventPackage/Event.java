@@ -62,9 +62,10 @@ public abstract class Event {
 
 /**
  * The StopSimEvent class that extends Event
+ * StopSimEvent stops the simulation from continuing
  * */
 
-class StopSimEvent extends Event{ //TODO "KLAR"
+class StopSimEvent extends Event{
 
 
     @Override
@@ -77,7 +78,7 @@ class StopSimEvent extends Event{ //TODO "KLAR"
 
     @Override
     public String toString() {
-        return "stop";
+        return "Stop";
     }
 }
 
@@ -103,28 +104,42 @@ class CustomerArrivalEvent extends Event{
     public void executeMe(State state, EventQueue queue) {
         StoreState storeState = (StoreState) state;
         storeState.addTime(this.getExecuteTime());
-        updateTimeRegisterEmpty(storeState);
         storeState.setLastCustomerID(storeState.getCustomerWithEvent(this).getID());
 
         if (storeState.storeFull()){
+            if (storeState.isOpen()){
+                Customer cust = CustomerFactory.createCustomer(storeState);
+                Event newArrival = new CustomerArrivalEvent(storeState.getTime() + storeState.getLambda());
+                cust.setCurrentEvent(newArrival);
+                queue.addEventToQueue(newArrival);
+                updateTimeRegisterEmpty(storeState);
+            }
+            storeState.setLastEvent(this);
+            storeState.notifyOB();
             storeState.addLostCustomer();
+        } else if (!storeState.isOpen()) {
+            // Inget händer
+            storeState.setLastEvent(this);
+            storeState.notifyOB();
         } else {
             storeState.addCustomerInStore();
             double nexttime = storeState.getTime() + storeState.getPickupTime();
             Event picking = new CustomerPickedEvent(nexttime);
             storeState.getCustomerWithEvent(this).setCurrentEvent(picking);
             queue.addEventToQueue(picking);
+
+            if (storeState.isOpen()){
+                Customer cust = CustomerFactory.createCustomer(storeState);
+                Event newArrival = new CustomerArrivalEvent(storeState.getTime() + storeState.getLambda());
+                cust.setCurrentEvent(newArrival);
+                queue.addEventToQueue(newArrival);
+                updateTimeRegisterEmpty(storeState);
+            }
+
+            storeState.setLastEvent(this);
+            storeState.notifyOB();
         }
 
-        if (storeState.isOpen()){
-            Customer cust = CustomerFactory.createCustomer(storeState);
-            Event newArrival = new CustomerArrivalEvent(storeState.getTime() + storeState.getLambda());
-            cust.setCurrentEvent(newArrival);
-            queue.addEventToQueue(newArrival);
-        }
-
-        storeState.setLastEvent(this);
-        storeState.notifyOB();
 
     }
 
@@ -144,6 +159,7 @@ class CustomerArrivalEvent extends Event{
             double totaltimeempty = timeEmpty * storeState.getEmptyRegisters();
             storeState.addTotalTimeRegEmpty(totaltimeempty);
         }
+        storeState.updateTotalTimeInQueue();
     }
 }
 
@@ -171,23 +187,24 @@ class CustomerPickedEvent extends Event{
     public void executeMe(State state, EventQueue queue) {
         StoreState storeState = (StoreState) state;
         storeState.addTime(this.getExecuteTime());
-        updateTimeRegisterEmpty(storeState);
         storeState.setLastCustomerID(storeState.getCustomerWithEvent(this).getID());
-
+        updateTimeRegisterEmpty(storeState);
         if (storeState.isRegEmpty()){
             storeState.addOpenReg();
             Event checkout = new CustomerCheckoutEvent(this.getExecuteTime() + storeState.getCheckoutTime());
             storeState.getCustomerWithEvent(this).setCurrentEvent(checkout);
             queue.addEventToQueue(checkout);
+            storeState.setLastEvent(this);
+            storeState.notifyOB();
         } else {
-
             storeState.getCheckoutQueue().addCustomerToQueue(storeState.getCustomerWithEvent(this));
-            storeState.getCustomerWithEvent(this).setTimeGetInLine(storeState.getTime());
             storeState.getCustomerWithEvent(this).setCurrentEvent(null);
-
+            storeState.setLastEvent(this);
+            storeState.notifyOB();
+            storeState.addCustomerThatQueue();
         }
-        storeState.setLastEvent(this);
-        storeState.notifyOB();
+
+
 
     }
 
@@ -197,6 +214,7 @@ class CustomerPickedEvent extends Event{
     }
 
     private void updateTimeRegisterEmpty(StoreState storeState){
+        storeState.updateTotalTimeInQueue();
         if (storeState.isRegEmpty()){
             double timeEmpty = storeState.getTime() - storeState.getLastEvent().getExecuteTime();
             double totaltimeempty = timeEmpty * storeState.getEmptyRegisters();
@@ -230,26 +248,24 @@ class CustomerCheckoutEvent extends Event{
         StoreState storeState = (StoreState) state;
         storeState.addTime(this.getExecuteTime());
         updateTimeRegisterEmpty(storeState);
+        storeState.setLastCheckoutTime(this.getExecuteTime());
         storeState.setLastCustomerID(storeState.getCustomerWithEvent(this).getID());
 
         if (storeState.getCheckoutQueue().hasNextCustomer()){
             double nexttime = storeState.getTime() + storeState.getCheckoutTime();
             Event newCheckout = new CustomerCheckoutEvent(nexttime);
             Customer nextCustomerToCheckout = storeState.getCheckoutQueue().getNextCustomer();
-            nextCustomerToCheckout.setTimeGetOutOfLine(storeState.getTime());
-            storeState.addTotalTimeInQueue(nextCustomerToCheckout.getTimeSpentInQueue());
-            nextCustomerToCheckout.setCurrentEvent(newCheckout);
             queue.addEventToQueue(newCheckout);
-            storeState.addCustomerThatQueue();
+            nextCustomerToCheckout.setCurrentEvent(newCheckout);
         } else {
             storeState.removeOpenReg();
         }
 
-        storeState.addCheckCustByOne();
         storeState.removeCustomerInStore();
 
         storeState.setLastEvent(this);
         storeState.notifyOB();
+        storeState.addCheckCustByOne();
 
 
     }
@@ -265,6 +281,7 @@ class CustomerCheckoutEvent extends Event{
             double totaltimeempty = timeEmpty * storeState.getEmptyRegisters();
             storeState.addTotalTimeRegEmpty(totaltimeempty);
         }
+        storeState.updateTotalTimeInQueue();
     }
 }
 
@@ -291,6 +308,7 @@ class StoreCloseEvent extends Event{ //TODO: "KLAR"
     
 
     private void updateTimeRegisterEmpty(StoreState storeState){
+        storeState.updateTotalTimeInQueue();
         if (storeState.isRegEmpty()){
             double timeEmpty = storeState.getTime() - storeState.getLastEvent().getExecuteTime();
             double totaltimeempty = timeEmpty * storeState.getEmptyRegisters();

@@ -13,9 +13,6 @@ public class Customer {
     private final int customerID;
     private Event currentEvent;
 
-    private double timeGetInLine = 0;
-    private double timeGetOutOfLine = 0;
-
     /**
      * The constructor that creates a new Customer
      * with an id and a start event
@@ -24,41 +21,6 @@ public class Customer {
      * */
     protected Customer(int id){
         this.customerID = id;
-    }
-    /**
-     * A method that sets the time when the Customer gets put
-     * in the CheckoutQueue
-     *
-     * @param timeGetInLine A representation of the time
-     *
-     * */
-
-    public void setTimeGetInLine(double timeGetInLine) {
-        this.timeGetInLine = timeGetInLine;
-    }
-
-    /**
-     * A method that sets the time when the Customer leaves
-     * the CheckoutQueue
-     *
-     * @param timeGetOutOfLine A representation of the time
-     *
-     * */
-
-    public void setTimeGetOutOfLine(double timeGetOutOfLine) {
-        this.timeGetOutOfLine = timeGetOutOfLine;
-    }
-
-    /**
-     * A getter method that gets the time that was spent in
-     * the CheckoutQueue
-     *
-     * @return The time spent in the CheckoutQueue
-     *
-     * */
-
-    public double getTimeSpentInQueue(){
-        return timeGetOutOfLine - timeGetInLine;
     }
 
     /**

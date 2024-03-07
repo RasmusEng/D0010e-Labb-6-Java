@@ -17,6 +17,10 @@ public class Simulator {
     private View view;
     private State currentState;
 
+    public State getCurrentState() {
+        return currentState;
+    }
+
     /**
      * Creates a new Simulator object
      * @param currentState Allows the simulator to store values

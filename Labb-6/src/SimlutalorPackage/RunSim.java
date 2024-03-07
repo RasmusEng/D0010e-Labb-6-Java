@@ -8,15 +8,15 @@ import ViewPackage.*;
 /**
  *
  * @author Rasmus, Albin, Walter, Alex
- * Optimize of the Sim
+ * Runs the Simulator
  *
  * */
 
 public class RunSim {
 
+
     /**
      * The main method that runs the Simulator
-     *
      * */
 
     public static void main(String[] args){

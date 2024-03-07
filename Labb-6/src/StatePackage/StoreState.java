@@ -20,16 +20,19 @@ import java.util.ArrayList;
 
 public class StoreState extends State implements K {
 
-    private int openReg, amountOfRegisters = 2, customersInStore, checkedOutCustomers, lostCustomers = 0, lastID, customersThatQueued = 0;
-    private double totalTimeInQueue, totalTimeRegEmpty;
+    private int openReg, amountOfRegisters, customersInStore, checkedOutCustomers, lostCustomers = 0, lastID, customersThatQueued = 0;
+    private double totalTimeInQueue, totalTimeRegEmpty, lastCheckoutTime = 0;
     private boolean isOpen;
     private CheckoutQueue checkoutQueue = new CheckoutQueue();
     private Event lastEvent;
     private ArrayList<Customer> customerArrayList = new ArrayList<Customer>();
-    private ExponentialRandomStream lambda = new ExponentialRandomStream(L, SEED);
+    //creates objects for getting new random numbers
 
+    private long seed;
+    private ExponentialRandomStream lambda = new ExponentialRandomStream(L, SEED);
     private UniformRandomStream checkoutTime = new UniformRandomStream(LOW_PAYMENT_TIME, HIGH_PAYMENT_TIME, SEED);
     private UniformRandomStream pickupTime = new UniformRandomStream(LOW_COLLECTION_TIME, HIGH_COLLECTION_TIME, SEED);
+    //creates a new decimalformat for rounding
     private DecimalFormat f = new DecimalFormat("0.00");
 
     /**
@@ -41,6 +44,24 @@ public class StoreState extends State implements K {
         super(view);
     }
 
+    public long getSeed(){
+        return seed;
+    }
+
+
+    public void setSeed(long seed){
+        lambda = new ExponentialRandomStream(L, seed);
+        checkoutTime = new UniformRandomStream(LOW_PAYMENT_TIME, HIGH_PAYMENT_TIME, seed);
+        pickupTime = new UniformRandomStream(LOW_COLLECTION_TIME, HIGH_COLLECTION_TIME, seed);
+        this.seed = seed;
+    }
+    public double getLastCheckoutTime(){
+        return lastCheckoutTime;
+    }
+
+    public void setLastCheckoutTime(double lastCheckoutTime){
+        this.lastCheckoutTime = lastCheckoutTime;
+    }
     public CheckoutQueue getCheckoutQueue() {
         return checkoutQueue;
     }
@@ -54,7 +75,7 @@ public class StoreState extends State implements K {
     }
 
     public double getCheckoutTime(){
-        return Double.parseDouble(f.format(checkoutTime.next()));
+        return checkoutTime.next();
     }
 
     public int getEmptyRegisters(){
@@ -62,7 +83,13 @@ public class StoreState extends State implements K {
     }
 
     public void addCustomerThatQueue(){
+
         customersThatQueued++;
+    }
+
+    public void setAmountOfRegisters(int value)
+    {
+        amountOfRegisters = value;
     }
 
     public int getCustomersAmountThatQueue(){
@@ -142,30 +169,6 @@ public class StoreState extends State implements K {
 
     /**
      * A method that gets a Customer with the
-     * specified id
-     *
-     * @return The specified Customer if it exists and
-     *         returns null if the Customer does not exist
-     *
-     * @throws RuntimeException If the id is less than
-     *                          the size of the CustomerArray
-     *
-     * */
-
-    public Customer getCustomerWithID(int id){
-        if (id < customerArrayList.size()){
-            throw new RuntimeException();
-        }
-        for (Customer e : customerArrayList){
-            if (e.getID() == id){
-                return e;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * A method that gets a Customer with the
      * specified Event
      *
      * @return The Customer if it exists, null otherwise
@@ -197,27 +200,57 @@ public class StoreState extends State implements K {
     }
 
 
-
+    /**
+     *
+     * @return the last executed event
+     */
     public Event getLastEvent(){
         return lastEvent;
     }
 
-    public void addTotalTimeInQueue(double moreTime){
+    private void addTotalTimeInQueue(double moreTime){
         totalTimeInQueue += moreTime;
     }
 
+    /**
+     * A method that updates the amount of time people have spent in queue
+     */
+    public void updateTotalTimeInQueue(){
+        double previousTime = this.getLastEvent().getExecuteTime();
+        int peopleInQueue = checkoutQueue.customerQueueSize();
+        double nowTime = this.getTime();
+        double moreTime = (nowTime - previousTime) * peopleInQueue;
+        addTotalTimeInQueue(moreTime);
+    }
+
+    /**
+     * A method that adds time to how much time the registers have been empty
+     * @param moreTime how much time to be added
+     */
     public void addTotalTimeRegEmpty(double moreTime){
         totalTimeRegEmpty += moreTime;
     }
 
+    /**
+     *
+     * @return the total time the total time that customers have queued
+     */
     public double getTotalTimeInQueue() {
         return totalTimeInQueue;
     }
 
+    /**
+     *
+     * @return the total time that the registers have been empty
+     */
     public double getTotalTimeRegEmpty() {
         return totalTimeRegEmpty;
     }
 
+    /**
+     *
+     * @return the amount of customers that have payed for their items
+     */
     public int getCheckedOutCustomers(){
         return checkedOutCustomers;
     }

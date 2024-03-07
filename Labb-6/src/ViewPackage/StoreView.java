@@ -2,7 +2,7 @@ package ViewPackage;
 
 import StatePackage.State;
 import StatePackage.StoreState;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
 
 import java.text.DecimalFormat;
 import java.util.Observable;
@@ -21,14 +21,9 @@ import java.util.Observable;
 public class StoreView extends View{
 
     private int huvud = 0;
+    private boolean results = true;
     private DecimalFormat f = new DecimalFormat("0.00");
 
-    /**
-     * A method that prints the parameters of the StoreSim
-     *
-     * @param state Takes a StoreState so that the variables are accessable
-     *
-     * */
 
     private void printHead(StoreState state)
     {
@@ -44,25 +39,26 @@ public class StoreView extends View{
         System.out.println("=======");
         System.out.println(headWriting());
     }
+
     private String formatString(String input1, String input2, int length) {
-        // Left shift input1 to fit within 15 characters
+        // vänstershiftar input1
         String formattedInput1 = input1.substring(0, Math.min(input1.length(), length));
 
-        // Determine the number of spaces needed for input2
+        // bstämmer hur många blanksteg som krävs för att högershifta input2
         int spaces = length - formattedInput1.length() - input2.length();
         StringBuilder stringBuilder = new StringBuilder();
 
-        // Append input1, spaces, and input2 to the StringBuilder
+        // använder stringbuilder för att bygga en sträng med rätt längd inpu1 till vä och input 2 till hö
         stringBuilder.append(formattedInput1);
         for (int i = 0; i < spaces; i++) {
             stringBuilder.append(" ");
         }
         stringBuilder.append(input2);
 
-        // Return the formatted string
         return stringBuilder.toString();
     }
 
+    // skapar en sträng för alla parametrar i sumulationen
     private String headWriting(){
         String händelse = formatString("Händelse", "Kund", 13);
         String tid = formatString("Tid", händelse,20);
@@ -87,18 +83,29 @@ public class StoreView extends View{
         String customersInStore = formatString(timeFreeRegisters, Integer.toString(storeState.getCustomersInStore()), 40);
         String checkedOutCustomers = formatString(customersInStore, Integer.toString(storeState.getCheckedOutCustomers()), 45);
         String missedCustomers = formatString(checkedOutCustomers, Integer.toString(storeState.getLostCustomers()), 50);
-        String customersThathaveQueued = formatString(missedCustomers, Integer.toString(storeState.getCustomersAmountThatQueue()), 55);
+        String customersThathaveQueued = formatString(missedCustomers, Integer.toString(storeState.getCustomersAmountThatQueue()), 52);
         String totalQueueTime = formatString(customersThathaveQueued, f.format(storeState.getTotalTimeInQueue()), 60);
-        String peopleInQueue = formatString(totalQueueTime, Integer.toString(storeState.getCheckoutQueue().customerQueueSize()), 65);
-        String peopleIdInQueue = peopleInQueue.concat("\t" + storeState.getCheckoutQueue().idInQueue());
+        String peopleInQueue = formatString(totalQueueTime, Integer.toString(storeState.getCheckoutQueue().getLastAmountPeopleInQueue()), 65);
+        String peopleIdInQueue = peopleInQueue.concat("\t" + storeState.getCheckoutQueue().getLastQueue());
         return peopleIdInQueue;
+    }
+
+    private void printResults(StoreState storeState){
+        System.out.println("RESULTAT \n ============= \n \n 1) Av " + (storeState.getCheckedOutCustomers() + storeState.getLostCustomers()) + " Kunder handlade " + storeState.getCheckedOutCustomers() + " Medans " + storeState.getLostCustomers() + " missades.");
+        System.out.println("2) Total tid " + storeState.getAmountOfRegisters() + " har varit lediga: " + f.format(storeState.getTotalTimeRegEmpty()) + " te.");
+        System.out.println("Genomsnittlig ledig kassatid: " + f.format(storeState.getTotalTimeRegEmpty() / storeState.getAmountOfRegisters()));
+        System.out.print("(dvs " + f.format(((( storeState.getTotalTimeRegEmpty() / storeState.getAmountOfRegisters() ) / storeState.getLastCheckoutTime()))*100) + "% av tiden öppen till sista kunden betalt");
+        System.out.println("3) Total tid " + storeState.getCustomersAmountThatQueue() + " kunder tvingats köa: " +  f.format(storeState.getTotalTimeInQueue()) + " te.");
+        System.out.println("  Genomsnittlig kötid: " + f.format(storeState.getTotalTimeInQueue()/storeState.getCustomersAmountThatQueue()) + " te.");
     }
 
 
     private String writeLine(State state, StoreState storeState){
         switch (storeState.getLastEvent().toString()){
             case "Start":
+                return formatString(f.format(storeState.getTime()) , formatString(storeState.getLastEvent().toString(), "", 13), 20);
             case "Stop":
+                results = false;
                 return formatString(f.format(storeState.getTime()) , formatString(storeState.getLastEvent().toString(), "", 13), 20);
             case "Close":
                 String closeString = formatString(f.format(storeState.getTime()), formatString(storeState.getLastEvent().toString(), "---", 13), 20);
@@ -111,8 +118,7 @@ public class StoreView extends View{
 
     /**
      * A method that overrides its parent method
-     * and runs the different print methods of the
-     * StoreView class
+     * and prints out the results of the simulation.
      * */
 
     @Override
@@ -122,10 +128,14 @@ public class StoreView extends View{
         if(huvud == 0){
             printHead(storeState);
             huvud++;
-        }else{
-            //System.out.println(f.format(state.getTime()) + "\t" + storeState.getLastEventString() + "\t" + storeState.isOpen() +"\t" + f.format(storeState.getTotalTimeRegEmpty()) +"\t" + storeState.getCustomersInStore() + "\t" + storeState.getCustomersAmountThatQueue() + "\t");
+        } else {
             System.out.println(writeLine(state, storeState));
+            if (storeState.getStop()){
+                printResults(storeState);
+            }
         }
+
+
 
     }
 

@@ -1,7 +1,6 @@
 
 package FIFO;
 
-import CustomerPackage.Customer;
 
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
