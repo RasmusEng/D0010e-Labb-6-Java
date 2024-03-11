@@ -15,7 +15,7 @@ public class Customer {
 
     /**
      * The constructor that creates a new Customer
-     * with an id and a start event
+     * with an id
      *
      * @param id An Integer that represents the specific Customer
      * */

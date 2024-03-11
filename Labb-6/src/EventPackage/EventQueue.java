@@ -34,7 +34,7 @@ public class EventQueue {
      * */
 
     public Event getNextEvent(){
-        return eventQueue.remove(0); // Returnerar de event som är näst på tur och tar bort det ur listan
+        return eventQueue.remove(0); // Returnerar de event som ar nast pa tur och tar bort det ur listan
     }
 
     /**
@@ -46,7 +46,7 @@ public class EventQueue {
      * */
 
     public void addEventToQueue(Event e){
-        eventQueue.add(e); // Lägger till ett event längst bak i listan.
+        eventQueue.add(e); // Lagger till ett event langst bak i listan.
         eventQueue = SortedSequence.sortArrayList(eventQueue); // ser till att eventQueue blir sorterad.
     }
 

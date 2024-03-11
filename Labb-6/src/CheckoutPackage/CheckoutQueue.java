@@ -92,7 +92,7 @@ public class CheckoutQueue {
     }
 
     /**
-     *  A method that returns the last queue:s customer ID:s
+     * A method that returns the last queue:s customer ID:s
      * @return String with the previous queue:s customerID:s
      */
 

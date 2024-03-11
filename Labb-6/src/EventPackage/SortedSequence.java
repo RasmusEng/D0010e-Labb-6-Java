@@ -26,7 +26,7 @@ public class SortedSequence {
 
     public static ArrayList<Event> sortArrayList(ArrayList<Event> list){
         if(list.size() == 0){
-            return list; // Om listan är tom
+            return list; // Om listan ar tom
         }
         // skall vara insertionSort
         int n = list.size();

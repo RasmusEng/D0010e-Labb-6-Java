@@ -47,8 +47,8 @@ public class Simulator {
 
         while(!currentState.getStop()){
             Event currentEvent = eventQueue.getNextEvent();
-            currentState.addTime(currentEvent.getExecuteTime()); // sätter simulatortiden till rätt tid
-            currentEvent.executeMe(currentState, eventQueue);//kör själva eventet.
+            currentState.addTime(currentEvent.getExecuteTime()); // satter simulatortiden till ratt tid
+            currentEvent.executeMe(currentState, eventQueue);//kor sjalva eventet.
 
         }
     }

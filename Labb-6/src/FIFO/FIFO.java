@@ -7,9 +7,9 @@ import java.util.NoSuchElementException;
 
 
 /**
- * @author Rasmus Engström
+ * @author Rasmus Engstrom
  */
-
+@SuppressWarnings("NonAsciiCharacters")
 public class FIFO implements Queue{
     private ArrayList<Object> queue = new ArrayList<Object>();
     private int maxSize = 0;
@@ -75,7 +75,7 @@ public class FIFO implements Queue{
         if(queue.size() != ((FIFO)o).size()){
             return false;
         }
-        // Loopar igenom queue och o.queue och kollar om varje element är lika
+        // Loopar igenom queue och o.queue och kollar om varje element ar lika
         for(int i = 0; i < queue.size(); i++){
             if(queue.get(i) == null){
                 if(((FIFO)o).queue.get(i) != null){

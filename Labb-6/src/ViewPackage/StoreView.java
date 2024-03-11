@@ -18,6 +18,7 @@ import java.util.Observable;
  *
  * */
 
+@SuppressWarnings("NonAsciiCharacters")
 public class StoreView extends View{
 
     private int huvud = 0;
@@ -34,21 +35,21 @@ public class StoreView extends View{
         System.out.println("Ankomsthastighet........: " + state.L);
         System.out.println("Plocktider, [Pmin..Pmax]: " + "[" + state.LOW_COLLECTION_TIME + ".." +state.HIGH_COLLECTION_TIME+"]");
         System.out.println("Betaltider, [Kmin..Kmax]: " + "[" + state.LOW_PAYMENT_TIME + ".." +state.HIGH_PAYMENT_TIME+"]");
-        System.out.println("Frö.....................: " + state.SEED);
-        System.out.println("FÖRLOPP");
+        System.out.println("Fro.....................: " + state.SEED);
+        System.out.println("FoRLOPP");
         System.out.println("=======");
         System.out.println(headWriting());
     }
 
     private String formatString(String input1, String input2, int length) {
-        // vänstershiftar input1
+        // vanstershiftar input1
         String formattedInput1 = input1.substring(0, Math.min(input1.length(), length));
 
-        // bstämmer hur många blanksteg som krävs för att högershifta input2
+        // bstammer hur manga blanksteg som kravs for att hogershifta input2
         int spaces = length - formattedInput1.length() - input2.length();
         StringBuilder stringBuilder = new StringBuilder();
 
-        // använder stringbuilder för att bygga en sträng med rätt längd inpu1 till vä och input 2 till hö
+        // anvander stringbuilder for att bygga en strang med ratt langd inpu1 till va och input 2 till ho
         stringBuilder.append(formattedInput1);
         for (int i = 0; i < spaces; i++) {
             stringBuilder.append(" ");
@@ -58,21 +59,21 @@ public class StoreView extends View{
         return stringBuilder.toString();
     }
 
-    // skapar en sträng för alla parametrar i sumulationen
+    // skapar en strang for alla parametrar i sumulationen
     private String headWriting(){
-        String händelse = formatString("Händelse", "Kund", 13);
-        String tid = formatString("Tid", händelse,20);
+        String handelse = formatString("Handelse", "Kund", 13);
+        String tid = formatString("Tid", handelse,20);
         String question = formatString(tid, "?",25);
         String ledigakassor = formatString(question, "led", 30);
         String ledT = formatString(ledigakassor, "ledT", 35);
-        String inneiaffären = formatString(ledT, "I", 40);
-        String betaladekunder = formatString(inneiaffären, "$", 45 );
+        String inneiaffaren = formatString(ledT, "I", 40);
+        String betaladekunder = formatString(inneiaffaren, "$", 45 );
         String missadekunder = formatString(betaladekunder, ":-(", 50);
-        String köadekunder = formatString(missadekunder, "köat", 55);
-        String totalkötid = formatString(köadekunder, "köT", 60);
-        String köar = formatString(totalkötid, "köar", 65);
-        String kassakö = formatString(köar, "[Kassakö]", 70);
-        return kassakö;
+        String koadekunder = formatString(missadekunder, "koat", 55);
+        String totalkotid = formatString(koadekunder, "koT", 60);
+        String koar = formatString(totalkotid, "koar", 65);
+        String kassako = formatString(koar, "[Kassako]", 70);
+        return kassako;
 
     }
 
@@ -94,9 +95,9 @@ public class StoreView extends View{
         System.out.println("RESULTAT \n ============= \n \n 1) Av " + (storeState.getCheckedOutCustomers() + storeState.getLostCustomers()) + " Kunder handlade " + storeState.getCheckedOutCustomers() + " Medans " + storeState.getLostCustomers() + " missades.");
         System.out.println("2) Total tid " + storeState.getAmountOfRegisters() + " har varit lediga: " + f.format(storeState.getTotalTimeRegEmpty()) + " te.");
         System.out.println("Genomsnittlig ledig kassatid: " + f.format(storeState.getTotalTimeRegEmpty() / storeState.getAmountOfRegisters()));
-        System.out.print("(dvs " + f.format(((( storeState.getTotalTimeRegEmpty() / storeState.getAmountOfRegisters() ) / storeState.getLastCheckoutTime()))*100) + "% av tiden öppen till sista kunden betalt");
-        System.out.println("3) Total tid " + storeState.getCustomersAmountThatQueue() + " kunder tvingats köa: " +  f.format(storeState.getTotalTimeInQueue()) + " te.");
-        System.out.println("  Genomsnittlig kötid: " + f.format(storeState.getTotalTimeInQueue()/storeState.getCustomersAmountThatQueue()) + " te.");
+        System.out.print("(dvs " + f.format(((( storeState.getTotalTimeRegEmpty() / storeState.getAmountOfRegisters() ) / storeState.getLastCheckoutTime()))*100) + "% av tiden oppen till sista kunden betalt");
+        System.out.println("3) Total tid " + storeState.getCustomersAmountThatQueue() + " kunder tvingats koa: " +  f.format(storeState.getTotalTimeInQueue()) + " te.");
+        System.out.println("  Genomsnittlig kotid: " + f.format(storeState.getTotalTimeInQueue()/storeState.getCustomersAmountThatQueue()) + " te.");
     }
 
 

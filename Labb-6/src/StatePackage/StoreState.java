@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * StoreState of the Sim
  *
  * */
-
+@SuppressWarnings("NonAsciiCharacters")
 public class StoreState extends State implements K {
 
     private int openReg, amountOfRegisters, customersInStore, checkedOutCustomers, lostCustomers = 0, lastID, customersThatQueued = 0;
@@ -134,8 +134,10 @@ public class StoreState extends State implements K {
     public void addCustomerInStore(){
         customersInStore += 1;
     }
-    public void removeCustomerInStore(){
+    public void removeCustomerInStore(Event e){
+        customerArrayList.remove(getCustomerWithEvent(e));
         customersInStore -=1;
+
     }
     public int getCustomersInStore(){
         return customersInStore;

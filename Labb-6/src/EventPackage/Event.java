@@ -71,7 +71,7 @@ class StopSimEvent extends Event{
     @Override
     public void executeMe(State state, EventQueue queue) {
         StoreState storeState = (StoreState) state;
-        storeState.setStop(); //bör göra rätt grej
+        storeState.setStop(); //bor gora ratt grej
         storeState.setLastEvent(this);
         storeState.notifyOB();
     }
@@ -118,7 +118,7 @@ class CustomerArrivalEvent extends Event{
             storeState.notifyOB();
             storeState.addLostCustomer();
         } else if (!storeState.isOpen()) {
-            // Inget händer
+            // Inget hander
             storeState.setLastEvent(this);
             storeState.notifyOB();
         } else {
@@ -149,7 +149,7 @@ class CustomerArrivalEvent extends Event{
     }
 
     /**
-     * Förklara gärna denna
+     * Forklara garna denna
      *
      * */
 
@@ -261,7 +261,8 @@ class CustomerCheckoutEvent extends Event{
             storeState.removeOpenReg();
         }
 
-        storeState.removeCustomerInStore();
+        storeState.removeCustomerInStore(this);
+
 
         storeState.setLastEvent(this);
         storeState.notifyOB();
